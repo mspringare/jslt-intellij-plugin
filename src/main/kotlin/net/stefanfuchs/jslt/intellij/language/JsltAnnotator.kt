@@ -5,6 +5,7 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiErrorElement
+import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import com.intellij.psi.TokenType
 import com.intellij.psi.search.searches.ReferencesSearch
@@ -64,7 +65,15 @@ class JsltAnnotator : Annotator {
     private fun annotateVariableUsage(element: JsltVariableUsage, holder: AnnotationHolder) {
         val varDecl = element.reference.resolve()
         if (varDecl == null) {
+            // Unknown variable - show warning
             holder.newAnnotation(HighlightSeverity.WARNING, "Unknown variable").create()
+        } else if (varDecl is PsiLiteralExpression) {
+            // This is a context variable from Java code
+            holder
+                .newAnnotation(HighlightSeverity.INFORMATION, "Context variable (from runtime)")
+                .range(element.textRange)
+                .textAttributes(JsltSyntaxHighlighter.LOCAL_VARIABLE)
+                .create()
         } else if (varDecl.elementType == JsltTypes.FUNCTION_DECL_PARAM_DECL) {
             holder
                 .newAnnotation(HighlightSeverity.INFORMATION, "Function parameter")

@@ -43,6 +43,13 @@ class JsltVariableReference(element: PsiElement, textRange: TextRange) :
             }
             parent = parent.parent
         }
+
+        // Check if this is a context variable from the registry
+        myElement?.project?.let { project ->
+            val contextVariables = JsltContextVariableRegistry.getContextVariables(project)
+            return contextVariables[variableName]
+        }
+
         return null
     }
 
@@ -68,7 +75,7 @@ class JsltVariableReference(element: PsiElement, textRange: TextRange) :
                 val letAssignment = parent
                     .letAssignmentList
                     .filter { letAssignment -> letAssignment.name !in variableDeclList.map { it.name } }
-                
+
                 variableDeclList.addAll(letAssignment)
             } else if (parent is JsltFunctionDecl) {
                 val localVariableDecl = parent
@@ -89,7 +96,12 @@ class JsltVariableReference(element: PsiElement, textRange: TextRange) :
             parent = parent.parent
         }
 
-        return variableDeclList
+        // Add context variables from the registry
+        val project = element.project
+        val contextVariables = JsltContextVariableRegistry.getContextVariables(project)
+        val existingNames = variableDeclList.mapNotNull { it.name }.toSet()
+
+        val localVariables = variableDeclList
             .map {
                 val icon = if (it is JsltLetAssignment) {
                     AllIcons.Nodes.Variable
@@ -102,7 +114,20 @@ class JsltVariableReference(element: PsiElement, textRange: TextRange) :
                     .withIcon(icon)
                     .withLookupString(it.name!!)
                     .withTypeText(it.containingFile.name)
-            }.toTypedArray()
+            }
+
+        val contextVariableSuggestions = contextVariables
+            .filterKeys { it !in existingNames }
+            .map { (varName, _) ->
+                LookupElementBuilder
+                    .create(varName)
+                    .withIcon(AllIcons.Nodes.Variable)
+                    .withLookupString(varName)
+                    .withTypeText("Context variable")
+                    .withTailText(" (from runtime)")
+            }
+
+        return (localVariables + contextVariableSuggestions).toTypedArray()
     }
 
     private fun findGlobalVariableDeclaration(parentElem: PsiElement): JsltLetAssignment? = parentElem
