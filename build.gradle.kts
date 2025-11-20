@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.stefanfuchs.jslt.intellij.language"
-version = "2.0.01"
+version = "2.0.02"
 
 repositories {
     mavenCentral()
@@ -29,6 +29,7 @@ dependencies {
     intellijPlatform {
         create("IC", "2025.1.3")
         bundledPlugin("org.jetbrains.plugins.yaml")
+        bundledPlugin("com.intellij.java")
     }
 }
 

@@ -25,13 +25,25 @@ class JsltImportDeclarationReference(element: PsiElement, textRange: TextRange) 
                 element.containingFile
             }
 
-        val referencedFile = containingFile?.parent?.virtualFile?.findFileByRelativePath(refFilename)
+        val resourcesRoot = findResourcesRoot(containingFile?.virtualFile)
+        val referencedFile = resourcesRoot?.findFileByRelativePath(refFilename)
 
         return if (referencedFile != null) {
             PsiManager.getInstance(element.project).findFile(referencedFile)
         } else {
             null
         }
+    }
+
+    private fun findResourcesRoot(virtualFile: com.intellij.openapi.vfs.VirtualFile?): com.intellij.openapi.vfs.VirtualFile? {
+        var current = virtualFile?.parent
+        while (current != null) {
+            if (current.name == "resources") {
+                return current
+            }
+            current = current.parent
+        }
+        return null
     }
 
 }

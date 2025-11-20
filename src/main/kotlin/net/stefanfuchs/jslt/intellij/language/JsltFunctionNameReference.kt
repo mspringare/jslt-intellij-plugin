@@ -40,11 +40,31 @@ class JsltFunctionNameReference(element: PsiElement, textRange: TextRange) :
                 }
             }
         } else {
+            // First check if the function name is actually an import alias being called directly
+            val importDeclarations = file.childrenOfType<JsltImportDeclarations>().firstOrNull()
+            if (importDeclarations != null) {
+                val importDecl = importDeclarations.importDeclarationList.firstOrNull { it.name == this.functionName }
+                if (importDecl != null) {
+                    // The function name matches an import alias, resolve directly to the imported file
+                    val importFile = importDecl.reference.resolve() as PsiFile?
+                    if (importFile != null) {
+                        return arrayOf(PsiElementResolveResult(importFile))
+                    }
+                }
+            }
+
+            // Try to find in current JSLT file
             val functionName: JsltFunctionDeclNameDecl? = findFunctionDeclNameInFile(file)
             if (functionName != null) {
                 return arrayOf(PsiElementResolveResult(findFunctionDeclNameInFile(file) as PsiElement))
             }
 
+            // If not found, check if it's a custom Java function
+            val customFunctions = JsltCustomFunctionRegistry.getCustomFunctions(myElement!!.project)
+            val javaClass = customFunctions[this.functionName]
+            if (javaClass != null) {
+                return arrayOf(PsiElementResolveResult(javaClass))
+            }
         }
 
         return emptyArray()

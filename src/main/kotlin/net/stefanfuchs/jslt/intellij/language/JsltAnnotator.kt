@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import com.intellij.psi.TokenType
+import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.util.childrenOfType
 import com.intellij.psi.util.elementType
 import com.schibsted.spt.data.jslt.impl.BuiltinFunctions
@@ -103,10 +104,18 @@ class JsltAnnotator : Annotator {
         val funcDecl = element.reference.resolve()
         if (funcDecl !is JsltFunctionDeclNameDecl) {
             val funcName = element.name ?: ""
+
+            // Check if the function name is actually an import alias being called directly
+            val importDeclarations = element.containingFile.childrenOfType<JsltImportDeclarations>().firstOrNull()
+            val isImportAlias = importDeclarations?.importDeclarationList?.any { it.name == funcName } ?: false
+
             // Check if it's a built-in function (from JSLT library or our documentation)
             val isBuiltinFromLibrary = funcName in BuiltinFunctions.functions.keys
             val isDocumented = JsltBuiltinFunctionDocumentation.getDocumentation(funcName) != null
-            
+            // Check if it's a custom function registered in Java code
+            val customFunctions = JsltCustomFunctionRegistry.getCustomFunctions(element.project)
+            val isCustomFunction = funcName in customFunctions.keys
+
             if (isBuiltinFromLibrary || isDocumented) {
                 val doc = JsltBuiltinFunctionDocumentation.getDocumentation(funcName) ?: "Built-in function"
                 holder
@@ -114,6 +123,15 @@ class JsltAnnotator : Annotator {
                     .range(element.textRange)
                     .textAttributes(JsltSyntaxHighlighter.BUILDIN_FUNCTION_NAME)
                     .create()
+            } else if (isCustomFunction) {
+                holder
+                    .newAnnotation(HighlightSeverity.INFORMATION, "Custom function")
+                    .range(element.textRange)
+                    .textAttributes(JsltSyntaxHighlighter.BUILDIN_FUNCTION_NAME)
+                    .create()
+            } else if (isImportAlias) {
+                // This is an import alias being called as a function - that's valid
+                // Don't annotate with a warning
             } else {
                 if (element.firstChild.elementType == JsltTypes.IDENT) {
                     holder.newAnnotation(HighlightSeverity.WARNING, "Undefined function").create()
@@ -378,24 +396,9 @@ class JsltAnnotator : Annotator {
     }
 
     private fun isFunctionUsed(functionDecl: JsltFunctionDeclNameDecl): Boolean {
-        val funcName = functionDecl.name ?: return true
-        val file = functionDecl.containingFile
-        
-        var isUsed = false
-        file.accept(object : PsiRecursiveElementWalkingVisitor() {
-            override fun visitElement(element: PsiElement) {
-                if (element is JsltFunctionName && element.name == funcName) {
-                    val resolved = element.reference.resolve()
-                    if (resolved == functionDecl) {
-                        isUsed = true
-                        stopWalking()
-                    }
-                }
-                super.visitElement(element)
-            }
-        })
-        
-        return isUsed
+        // Use ReferencesSearch to find all references across all files, not just the current file
+        val references = ReferencesSearch.search(functionDecl).findAll()
+        return references.isNotEmpty()
     }
 
     private fun isParameterUsed(paramDecl: JsltFunctionDeclParamDecl): Boolean {
@@ -422,18 +425,26 @@ class JsltAnnotator : Annotator {
     private fun isImportAliasUsed(importDecl: JsltImportDeclaration): Boolean {
         val aliasName = importDecl.name ?: return true
         val file = importDecl.containingFile
-        
+
         var isUsed = false
         file.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
-                if (element is JsltFunctionName && element.importAlias == aliasName) {
-                    isUsed = true
-                    stopWalking()
+                if (element is JsltFunctionName) {
+                    // Check if used with alias:function notation
+                    if (element.importAlias == aliasName) {
+                        isUsed = true
+                        stopWalking()
+                    }
+                    // Check if the alias itself is called as a function
+                    if (element.name == aliasName) {
+                        isUsed = true
+                        stopWalking()
+                    }
                 }
                 super.visitElement(element)
             }
         })
-        
+
         return isUsed
     }
 
