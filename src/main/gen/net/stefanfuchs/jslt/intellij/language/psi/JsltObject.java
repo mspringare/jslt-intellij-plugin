@@ -11,7 +11,6 @@ public interface JsltObject extends PsiElement {
   @Nullable
   JsltObjectBody getObjectBody();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
 }

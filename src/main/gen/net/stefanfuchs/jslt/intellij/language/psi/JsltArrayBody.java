@@ -13,7 +13,6 @@ public interface JsltArrayBody extends PsiElement {
   @Nullable
   JsltArrayFor getArrayFor();
 
-  @NotNull
-  List<JsltExpr> getExpressions();
+  @NotNull List<@NotNull JsltExpr> getExpressions();
 
 }

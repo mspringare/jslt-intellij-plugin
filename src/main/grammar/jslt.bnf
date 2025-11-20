@@ -113,7 +113,7 @@ FunctionDeclNameDecl ::= FUNCTION_DECL_NAME {
                                                 name="function-name"
                                                 mixin="net.stefanfuchs.jslt.intellij.language.psi.impl.JsltFunctionDeclNameDeclElementImpl"
                                                 implements="net.stefanfuchs.jslt.intellij.language.psi.JsltFunctionDeclNameDeclElement"
-                                                methods=[ getName setName getNameIdentifier isReferenceTo ]
+                                                methods=[ getName setName getNameIdentifier isReferenceTo getUseScope ]
                                             }
 FunctionDecl ::= {
                    DEF FunctionDeclNameDecl LPAREN FunctionDeclParamList? RPAREN

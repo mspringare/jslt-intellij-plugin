@@ -9,20 +9,15 @@ import com.intellij.psi.PsiReference;
 
 public interface JsltImportDeclaration extends JsltImportDeclElement {
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @NotNull
-  PsiElement setName(@NotNull String newName);
+  @NotNull PsiElement setName(@NotNull String newName);
 
-  @Nullable
-  PsiElement getNameIdentifier();
+  @Nullable PsiElement getNameIdentifier();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
-  @NotNull
-  PsiReference getReference();
+  @NotNull PsiReference getReference();
 
   boolean isReferenceTo(@NotNull PsiElement otherElement);
 

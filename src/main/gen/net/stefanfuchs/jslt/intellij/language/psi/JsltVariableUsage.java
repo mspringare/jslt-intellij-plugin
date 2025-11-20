@@ -8,16 +8,12 @@ import com.intellij.psi.PsiReference;
 
 public interface JsltVariableUsage extends JsltVariableUsageElement {
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @NotNull
-  PsiElement setName(@NotNull String newName);
+  @NotNull PsiElement setName(@NotNull String newName);
 
-  @Nullable
-  PsiElement getNameIdentifier();
+  @Nullable PsiElement getNameIdentifier();
 
-  @NotNull
-  PsiReference getReference();
+  @NotNull PsiReference getReference();
 
 }

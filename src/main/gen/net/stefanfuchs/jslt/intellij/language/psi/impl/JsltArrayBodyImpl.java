@@ -41,8 +41,7 @@ public class JsltArrayBodyImpl extends ASTWrapperPsiElement implements JsltArray
   }
 
   @Override
-  @NotNull
-  public List<JsltExpr> getExpressions() {
+  public @NotNull List<@NotNull JsltExpr> getExpressions() {
     return JsltPsiImplUtil.getExpressions(this);
   }
 

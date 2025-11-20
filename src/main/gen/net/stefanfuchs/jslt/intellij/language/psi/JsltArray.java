@@ -11,7 +11,6 @@ public interface JsltArray extends PsiElement {
   @Nullable
   JsltArrayBody getArrayBody();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
 }

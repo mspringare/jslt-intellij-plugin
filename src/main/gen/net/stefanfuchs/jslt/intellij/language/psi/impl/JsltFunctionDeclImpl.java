@@ -48,26 +48,22 @@ public class JsltFunctionDeclImpl extends ASTWrapperPsiElement implements JsltFu
   }
 
   @Override
-  @Nullable
-  public String getName() {
+  public @Nullable String getName() {
     return JsltPsiImplUtil.getName(this);
   }
 
   @Override
-  @Nullable
-  public PsiElement getNameIdentifier() {
+  public @Nullable PsiElement getNameIdentifier() {
     return JsltPsiImplUtil.getNameIdentifier(this);
   }
 
   @Override
-  @NotNull
-  public ItemPresentation getPresentation() {
+  public @NotNull ItemPresentation getPresentation() {
     return JsltPsiImplUtil.getPresentation(this);
   }
 
   @Override
-  @Nullable
-  public JsltExpr getExpr() {
+  public @Nullable JsltExpr getExpr() {
     return JsltPsiImplUtil.getExpr(this);
   }
 

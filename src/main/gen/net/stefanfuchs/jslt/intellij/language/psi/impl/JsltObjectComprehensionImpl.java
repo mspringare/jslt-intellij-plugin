@@ -36,8 +36,7 @@ public class JsltObjectComprehensionImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @NotNull
-  public ItemPresentation getPresentation() {
+  public @NotNull ItemPresentation getPresentation() {
     return JsltPsiImplUtil.getPresentation(this);
   }
 

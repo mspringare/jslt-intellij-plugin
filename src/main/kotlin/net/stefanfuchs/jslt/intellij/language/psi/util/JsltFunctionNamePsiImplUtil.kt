@@ -48,5 +48,7 @@ fun getImportAlias(element: JsltFunctionName): String? {
 }
 
 fun getReference(element: JsltFunctionName): PsiReference {
-    return JsltFunctionNameReference(element, TextRange(0, element.text.length))
+    val alias = element.importAlias
+    val offset = if (alias != null) alias.length + 1 else 0  // +1 for the colon
+    return JsltFunctionNameReference(element, TextRange(offset, element.text.length))
 }

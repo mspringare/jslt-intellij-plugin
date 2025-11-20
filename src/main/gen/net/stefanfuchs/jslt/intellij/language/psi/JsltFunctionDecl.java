@@ -17,20 +17,16 @@ public interface JsltFunctionDecl extends PsiElement {
   @Nullable
   JsltFunctionDeclParamList getFunctionDeclParamList();
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @Nullable
-  PsiElement getNameIdentifier();
+  @Nullable PsiElement getNameIdentifier();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
   //WARNING: getLetAssignmentList(...) is skipped
   //matching getLetAssignmentList(JsltFunctionDecl, ...)
   //methods are not found in JsltPsiImplUtil
 
-  @Nullable
-  JsltExpr getExpr();
+  @Nullable JsltExpr getExpr();
 
 }

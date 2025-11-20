@@ -9,13 +9,10 @@ public interface JsltLetVariableDecl extends JsltLetVariableDeclElement {
 
   boolean isReferenceTo(@NotNull PsiElement otherElement);
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @NotNull
-  PsiElement setName(@NotNull String newName);
+  @NotNull PsiElement setName(@NotNull String newName);
 
-  @Nullable
-  PsiElement getNameIdentifier();
+  @Nullable PsiElement getNameIdentifier();
 
 }

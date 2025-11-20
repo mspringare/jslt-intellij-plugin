@@ -11,10 +11,8 @@ public interface JsltPair extends PsiElement {
   @NotNull
   List<JsltExpr> getExprList();
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
 }

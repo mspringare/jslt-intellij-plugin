@@ -11,7 +11,6 @@ public interface JsltObjectComprehension extends PsiElement {
   @NotNull
   JsltObjectComprehensionBody getObjectComprehensionBody();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
 }

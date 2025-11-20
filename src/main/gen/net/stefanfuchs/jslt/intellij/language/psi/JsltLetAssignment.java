@@ -15,13 +15,10 @@ public interface JsltLetAssignment extends PsiNamedElement {
   @NotNull
   JsltLetVariableDecl getLetVariableDecl();
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @NotNull
-  PsiElement setName(@NotNull String newName);
+  @NotNull PsiElement setName(@NotNull String newName);
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
 }

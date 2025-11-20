@@ -30,32 +30,27 @@ public class JsltImportDeclarationImpl extends JsltImportDeclElementImpl impleme
   }
 
   @Override
-  @Nullable
-  public String getName() {
+  public @Nullable String getName() {
     return JsltPsiImplUtil.getName(this);
   }
 
   @Override
-  @NotNull
-  public PsiElement setName(@NotNull String newName) {
+  public @NotNull PsiElement setName(@NotNull String newName) {
     return JsltPsiImplUtil.setName(this, newName);
   }
 
   @Override
-  @Nullable
-  public PsiElement getNameIdentifier() {
+  public @Nullable PsiElement getNameIdentifier() {
     return JsltPsiImplUtil.getNameIdentifier(this);
   }
 
   @Override
-  @NotNull
-  public ItemPresentation getPresentation() {
+  public @NotNull ItemPresentation getPresentation() {
     return JsltPsiImplUtil.getPresentation(this);
   }
 
   @Override
-  @NotNull
-  public PsiReference getReference() {
+  public @NotNull PsiReference getReference() {
     return JsltPsiImplUtil.getReference(this);
   }
 

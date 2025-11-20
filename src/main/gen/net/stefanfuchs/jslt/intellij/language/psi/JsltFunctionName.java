@@ -8,23 +8,18 @@ import com.intellij.psi.PsiReference;
 
 public interface JsltFunctionName extends JsltFunctionNameElement {
 
-  @Nullable
-  String getName();
+  @Nullable String getName();
 
-  @NotNull
-  PsiElement setName(@NotNull String newName);
+  @NotNull PsiElement setName(@NotNull String newName);
 
-  @Nullable
-  PsiElement getNameIdentifier();
+  @Nullable PsiElement getNameIdentifier();
 
-  @Nullable
-  String getImportAlias();
+  @Nullable String getImportAlias();
 
   //WARNING: setImportAlias(...) is skipped
   //matching setImportAlias(JsltFunctionName, ...)
   //methods are not found in JsltPsiImplUtil
 
-  @NotNull
-  PsiReference getReference();
+  @NotNull PsiReference getReference();
 
 }

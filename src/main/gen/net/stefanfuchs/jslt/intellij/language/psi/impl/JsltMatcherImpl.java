@@ -42,8 +42,7 @@ public class JsltMatcherImpl extends ASTWrapperPsiElement implements JsltMatcher
   }
 
   @Override
-  @NotNull
-  public ItemPresentation getPresentation() {
+  public @NotNull ItemPresentation getPresentation() {
     return JsltPsiImplUtil.getPresentation(this);
   }
 

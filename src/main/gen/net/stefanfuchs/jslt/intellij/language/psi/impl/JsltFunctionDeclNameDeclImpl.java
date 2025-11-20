@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static net.stefanfuchs.jslt.intellij.language.psi.JsltTypes.*;
 import net.stefanfuchs.jslt.intellij.language.psi.*;
 import net.stefanfuchs.jslt.intellij.language.psi.util.JsltPsiImplUtil;
+import com.intellij.psi.search.SearchScope;
 
 public class JsltFunctionDeclNameDeclImpl extends JsltFunctionDeclNameDeclElementImpl implements JsltFunctionDeclNameDecl {
 
@@ -28,26 +29,28 @@ public class JsltFunctionDeclNameDeclImpl extends JsltFunctionDeclNameDeclElemen
   }
 
   @Override
-  @Nullable
-  public String getName() {
+  public @Nullable String getName() {
     return JsltPsiImplUtil.getName(this);
   }
 
   @Override
-  @NotNull
-  public PsiElement setName(@NotNull String newName) {
+  public @NotNull PsiElement setName(@NotNull String newName) {
     return JsltPsiImplUtil.setName(this, newName);
   }
 
   @Override
-  @Nullable
-  public PsiElement getNameIdentifier() {
+  public @Nullable PsiElement getNameIdentifier() {
     return JsltPsiImplUtil.getNameIdentifier(this);
   }
 
   @Override
   public boolean isReferenceTo(@NotNull PsiElement otherElement) {
     return JsltPsiImplUtil.isReferenceTo(this, otherElement);
+  }
+
+  @Override
+  public @NotNull SearchScope getUseScope() {
+    return JsltPsiImplUtil.getUseScope(this);
   }
 
 }

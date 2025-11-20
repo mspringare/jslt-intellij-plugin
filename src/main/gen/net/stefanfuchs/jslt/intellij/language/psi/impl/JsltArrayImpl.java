@@ -36,8 +36,7 @@ public class JsltArrayImpl extends ASTWrapperPsiElement implements JsltArray {
   }
 
   @Override
-  @NotNull
-  public ItemPresentation getPresentation() {
+  public @NotNull ItemPresentation getPresentation() {
     return JsltPsiImplUtil.getPresentation(this);
   }
 

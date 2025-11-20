@@ -14,7 +14,6 @@ public interface JsltMatcher extends PsiElement {
   @Nullable
   JsltMatcherMinus getMatcherMinus();
 
-  @NotNull
-  ItemPresentation getPresentation();
+  @NotNull ItemPresentation getPresentation();
 
 }

@@ -36,14 +36,12 @@ public class JsltPairImpl extends ASTWrapperPsiElement implements JsltPair {
   }
 
   @Override
-  @Nullable
-  public String getName() {
+  public @Nullable String getName() {
     return JsltPsiImplUtil.getName(this);
   }
 
   @Override
-  @NotNull
-  public ItemPresentation getPresentation() {
+  public @NotNull ItemPresentation getPresentation() {
     return JsltPsiImplUtil.getPresentation(this);
   }
 

@@ -5,6 +5,8 @@ package net.stefanfuchs.jslt.intellij.language.psi.util
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.search.SearchScope
 import net.stefanfuchs.jslt.intellij.language.psi.JsltElementFactory
 import net.stefanfuchs.jslt.intellij.language.psi.JsltFunctionDeclNameDecl
 import net.stefanfuchs.jslt.intellij.language.psi.JsltFunctionName
@@ -35,4 +37,8 @@ fun isReferenceTo(element: JsltFunctionDeclNameDecl, otherElement: PsiElement): 
     return otherElement is JsltFunctionName &&
             element.name == otherElement.name &&
             otherElement.reference.resolve() == element
+}
+
+fun getUseScope(element: JsltFunctionDeclNameDecl): SearchScope {
+    return GlobalSearchScope.projectScope(element.project)
 }
